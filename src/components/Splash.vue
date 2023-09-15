@@ -1,5 +1,5 @@
 <template>
-  <section class="splash__container full-height full-width column justify-center">
+  <section class="splash__container full-width column justify-center">
     <div class="splash-inner">
       <div class="row justify-center" ref="logo">
         <Logo class="logo" />
@@ -11,7 +11,7 @@
 
       <nav class="splash--nav row full-width" ref="nav">
         <div class="row splash-nav--inner">
-          <button class="button--plain" @click="$router.push({name: 'about'})">About</button>
+          <button class="button--plain" @click="$router.push({ name: 'about' })">About</button>
 
           <color-button @click="emit('content')" class="content-button"> Content </color-button>
         </div>
@@ -42,7 +42,7 @@ $button-border-radius: calcDimension(0.15686);
 $button-border-radius-xs: calcDimensionXs(0.254);
 
 .splash__container {
-  height: calc(100 * var(--vh, 1vh));
+  height: calc(100 * var(--vh, 1vh))!important;
   width: 100vw;
   box-sizing: content-box;
   justify-content: center;
@@ -54,8 +54,6 @@ $button-border-radius-xs: calcDimensionXs(0.254);
   .splash-inner {
     width: fit-content;
     box-sizing: border-box;
-    // padding: 0px 8.6vw;
-
     @include sm {
       margin: auto;
       margin-top: calcDimension(0.2323);
