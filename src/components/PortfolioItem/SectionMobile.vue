@@ -59,8 +59,10 @@
   </div>
 </template>
 <style lang="scss" scoped>
+
+$scrollsection-height: calc(100 * var(--vh, 1vh));
 .scrollsection {
-  height: 100vh;
+  height: $scrollsection-height;
   width: 100vw;
   position: fixed;
   overflow: auto;
@@ -71,7 +73,7 @@
 
   .text--area {
     position: fixed;
-    height: calc(100vh - min(100vw, 40vh));
+    height: calc($scrollsection-height - min(100vw, 40vh));
     width: 100vw;
     left: 0;
 
