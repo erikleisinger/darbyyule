@@ -79,7 +79,6 @@
 </style>
 <script setup>
 import { SECTION_TILE_IMAGES } from '@/constants/content'
-import image from '@/assets/images/ccc_computer.png'
 import { defineProps, nextTick, onMounted, ref } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
