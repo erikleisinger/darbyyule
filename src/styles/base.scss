@@ -1,0 +1,381 @@
+@import "colors.scss";
+@import url("https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700;800;900&family=Source+Sans+3&display=swap');
+#app {
+    height: 100vh;
+    width: 100vw;
+}
+
+body {
+    margin: unset;
+    background-color: $background;
+}
+
+
+@font-face {
+    font-family: 'Spartan';
+    font-style: normal;
+    font-weight: 400;
+    src: url('fonts/Spartan-Regular.ttf') format('woff2'), 
+  }
+
+  @font-face {
+    font-family: 'Spartan';
+    font-style: normal;
+    font-weight: 600;
+    src: url('fonts/Spartan-SemiBold.ttf') format('woff2'), 
+  }
+
+  @font-face {
+    font-family: 'Spartan';
+    font-style: regular;
+    font-weight: 700;
+    src: url('fonts/Spartan-Bold.ttf') format('woff2'), 
+  }
+
+  @font-face {
+    font-family: 'Helvetica';
+    font-style: regular;
+    font-weight: 300;
+    src: url('fonts/Helvetica-Neue.ttf') format('woff2'), 
+  }
+
+  @font-face {
+    font-family: 'Helvetica';
+    font-style: regular;
+    font-weight: 200;
+    src: url('fonts/Helvetica-Light.ttf') format('woff2'), 
+  }
+
+$font-title: 'Spartan', sans-serif;
+$font-subtitle: 'Helvetica', sans-serif;
+
+$xs-reference: 390px;
+$sm-reference: 1512px;
+// arg in pixesl
+@function calcDimensionXs($n) {
+  @return calc($n / $xs-reference * 100 * 1vw);
+}
+@function calcDimension($n) {
+  @return calc($n / $sm-reference * 100 * 1vw);
+}
+
+
+
+html, body, div, span, object, iframe, figure, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, code, em, img, small, strike, strong, sub, sup, tt, b, u, i, ol, ul, li, fieldset, form, label, table, caption, tbody, tfoot, thead, tr, th, td, main, canvas, embed, footer, header, nav, section, video 
+{
+  vertical-align: baseline;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: none;
+
+}
+
+html {
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+%reset-button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+
+    background: transparent;
+
+    /* inherit font & color from ancestor */
+    color: inherit;
+    font: inherit;
+
+    /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+    line-height: normal;
+
+    /* Corrects font smoothing for webkit */
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+
+    /* Corrects inability to style clickable `input` types in iOS */
+    -webkit-appearance: none;
+    &::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+    }
+}
+
+
+// Responsive classes
+
+:root {
+    --vh: 1vh;
+  }
+
+:root {
+    --text-base-size: 1em;
+
+    --text-scale-ratio: 1.2;
+    --text-xs: calc((1em / var(--text-scale-ratio)) / var(--text-scale-ratio));
+    --text-sm: calc(var(--text-xs) * var(--text-scale-ratio));
+    --text-md: calc(
+    var(--text-sm) * var(--text-scale-ratio) * var(--text-scale-ratio)
+    );
+    --text-lg: calc(var(--text-md) * var(--text-scale-ratio));
+    --text-xl: calc(var(--text-lg) * var(--text-scale-ratio));
+    --text-xxl: calc(var(--text-xl) * var(--text-scale-ratio));
+    --text-xxxl: calc(var(--text-xxl) * var(--text-scale-ratio));
+}
+
+:root {
+    --space-unit:  1em;
+    --space-xxxxs: calc(0.125 * var(--space-unit));
+    --space-xxxs:  calc(0.25 * var(--space-unit));
+    --space-xxs:   calc(0.375 * var(--space-unit));
+    --space-xs:    calc(0.5 * var(--space-unit));
+    --space-sm:    calc(0.75 * var(--space-unit));
+    --space-md:    calc(1.25 * var(--space-unit));
+    --space-lg:    calc(2 * var(--space-unit));
+    --space-xl:    calc(3.25 * var(--space-unit));
+    --space-xxl:   calc(5.25 * var(--space-unit));
+    --space-xxxl:  calc(8.5 * var(--space-unit));
+    --space-xxxxl: calc(13.75 * var(--space-unit));
+  }
+
+  :root {
+    --transparent-light: rgba(0,0,0,0.2);
+    --transparent-med: rgba(0,0,0,0.4);
+    --transparent-heavy: rgba(0,0,0,0.8);
+  }
+
+  $font-family-main: "Montserrat", sans-serif;
+  $font-family-secondary: "Hind", sans-serif;
+
+
+html {
+    width: 100%;
+}
+
+body {
+    height: calc(100 * var(--vh, 1vh));
+    position: fixed;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    // overscroll-behavior-y: contain;
+    overscroll-behavior-x: contain;
+    font-family: $font-family-secondary;
+    -webkit-touch-callout: none; /* Safari */
+    -webkit-user-select: none; /* Chrome */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+
+    font-size: var(--text-base-size);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+label {
+
+    line-height: unset;
+    margin: 0;
+    font-weight: normal;
+}
+
+// Utility Classes
+
+.truncate-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap
+}
+.justify-center {
+    justify-content: center;
+}
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-around {
+    justify-content: space-around;
+}
+.justify-end {
+    justify-content: flex-end;
+}
+
+.items-center {
+    align-items: center;
+}
+.full-height {
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+.no-wrap {
+    flex-wrap: nowrap
+}
+
+// Typography
+
+h1 {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: $green;
+}
+
+h2 {
+    color: $pink;
+}
+
+.text-xxxl {
+    font-size: var(--text-xxxl);
+}
+
+h1,
+.text-xxl {
+    font-size: var(--text-xxl);
+    
+}
+
+h2,
+.text-xl {
+    font-size: var(--text-xl);
+}
+
+h3,
+.text-lg {
+    font-size: var(--text-lg);
+}
+
+h4,
+.text-md {
+    font-size: var(--text-md);
+}
+
+.text-sm,
+small {
+    font-size: var(--text-sm);
+}
+
+.text-xs {
+    font-size: var(--text-xs);
+}
+
+.text-muted {
+    color: rgba(0,0,0,0.6);
+}
+
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 600px;
+
+// Small tablets (portrait view)
+$screen-md-min: 1024px;
+
+// Tablets and small desktops
+$screen-lg-min: 1440px;
+
+// Large tablets and desktops
+$screen-xl-min: 1920px;
+
+
+@mixin xs {
+    @media (max-width: #{$screen-sm-min}) {
+        @content;
+    }
+}
+@mixin sm {
+    @media (min-width: #{$screen-sm-min}) {
+        @content;
+    }
+}
+
+// Medium devices
+@mixin md {
+    @media (min-width: #{$screen-md-min}) {
+        @content;
+    }
+}
+
+// Large devices
+@mixin lg {
+    @media (min-width: #{$screen-lg-min}) {
+        @content;
+    }
+}
+
+// Extra large devices
+@mixin xl {
+    @media (min-width: #{$screen-xl-min}) {
+        @content;
+    }
+}
+
+@supports (--css: variables) {
+    @include md {
+        :root {
+            --text-base-size: 1.25em;
+        }
+    }
+    @include lg {
+        :root {
+            --text-base-size: 1.5em;
+        }
+    }
+    @include xl {
+        :root {
+            --text-base-size: 1.75em;
+        }
+    }
+}
+
+// Buttons
+
+$button-radius: 16px 0px 16px 0px;
+:root {
+    --button-gradient: linear-gradient(89.62deg, #887BAD 0.19%, #9E5170 99.67%);
+}
+
+.button--plain,
+.button--color {
+    @extend %reset-button;
+    cursor: pointer;
+    font-size: 6vw;
+    padding: 0px var(--space-sm);
+    @include sm {
+        font-size: min(4vw, 30px);
+    }
+
+}
+
+.button--plain {
+    text-decoration: underline;
+   
+}
+
+.button--color {
+    background-color: $purple;
+    color: white;
+    font-weight: bold;
+    border-radius: $button-radius;
+
+}
