@@ -79,7 +79,7 @@
 </style>
 <script setup>
 import { SECTION_TILE_IMAGES } from '@/constants/content'
-import { defineProps, nextTick, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)

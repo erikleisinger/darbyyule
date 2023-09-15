@@ -157,7 +157,7 @@ import Logo from './Logo.vue'
 import Teaser from './PortfolioItem/Teaser.vue'
 import PortfolioSectionConception from './PortfolioItem/SectionConception.vue'
 import CloseButton from './CloseButton.vue'
-import { defineEmits, defineProps, nextTick, ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import gsap from 'gsap'
 import { Flip } from 'gsap/Flip'
 gsap.registerPlugin(Flip)
