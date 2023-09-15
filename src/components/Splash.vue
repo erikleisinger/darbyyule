@@ -42,7 +42,7 @@ $button-border-radius: calcDimension(0.15686);
 $button-border-radius-xs: calcDimensionXs(0.254);
 
 .splash__container {
-  height: calc(100 * var(--vh))!important;
+  height: 100%;
   width: 100vw;
   box-sizing: content-box;
   justify-content: center;
