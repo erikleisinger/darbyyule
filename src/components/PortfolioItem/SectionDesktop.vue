@@ -4,8 +4,8 @@
     <div class="scroll-section--invis" :style="{ height: bufferHeight }"></div>
     <div v-for="(section, index) in SECTIONS[name].slice(1)" :key="index">
       <div class="row section-container">
-        {{ currentSection }}
         <div class="description-container" :id="`description-${index}-${id}`">
+          <div class="gradient-container"  :style="{visibility: index >= 2 && currentSection >=3 ? 'visible' : 'hidden'}" />
           <span class="title--wrap" data-flip-id="title">{{ section?.title }}</span>
 
           <div class="text--wrap">
@@ -30,15 +30,19 @@
           }"
           class="image-big"
           :id="`image-big-${index}-${id}`"
-          :style="{ background: `url(${getImageUrl(section.img)})` }"
           v-if="!section.video || !playingVideo"
         >
-<div class="play-button--wrap" v-if="!playingVideo && currentSection > 2 && !!section.video">
-          <play class="play-button" @click="playingVideo =  true" />
+          <div class="gradient-container"  :style="{visibility: index >= 2 && currentSection >=3 ? 'visible' : 'hidden'}" />
+          <div class="image-inner" :style="{ background: `url(${getImageUrl(section.img)})` }" />
+          <div
+            class="play-button--wrap"
+            v-if="!playingVideo && currentSection > 2 && !!section.video"
+          >
+            <play class="play-button" @click="playingVideo = true" />
+          </div>
         </div>
-        </div>
-   
-          <div class="video-container" v-if="section.video && playingVideo">
+
+        <div class="video-container" v-if="section.video && playingVideo">
           <iframe
             class="video"
             :src="section.videoUrl"
@@ -48,9 +52,7 @@
             allowfullscreen
             height="100%"
           ></iframe>
-          <div class="video--frame">
-                    
-          </div>
+          <div class="video--frame"></div>
         </div>
       </div>
     </div>
@@ -91,7 +93,6 @@
   </div>
 </template>
 <style lang="scss" scoped>
-
 $title-size: calcDimension(79.435px);
 .scrollsection {
   height: 100vh;
@@ -101,6 +102,15 @@ $title-size: calcDimension(79.435px);
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  .gradient-container {
+    position: absolute;
+    top: 0;
+    height: 50vh;
+    width: 50vw;
+    background: linear-gradient(180deg, #887bad 0%, #fffcf8 100%);
+    z-index: 1;
   }
 
   .text--area {
@@ -141,6 +151,7 @@ $title-size: calcDimension(79.435px);
     font-family: $font-title;
     font-size: $title-size;
     font-weight: 600;
+    z-index: 1;
   }
   .text--wrap {
     font-size: calcDimension(20px);
@@ -148,6 +159,7 @@ $title-size: calcDimension(79.435px);
     color: $green;
     font-family: $font-title;
     font-size: calcDimension(20px);
+    z-index: 1;
   }
   .about-container {
     width: 100%;
@@ -223,11 +235,13 @@ $title-size: calcDimension(79.435px);
       background-color: $background;
       padding: 0px calcDimension(128px);
       box-sizing: border-box;
+      z-index: 1;
     }
   }
   .image-big {
     position: fixed;
     top: 0;
+
     &:not(.horizontal) {
       top: 100vh;
     }
@@ -239,9 +253,24 @@ $title-size: calcDimension(79.435px);
     background-repeat: no-repeat !important;
     background-size: cover !important;
     background-position: center center !important;
-    &.horizontal,
+    background-color: $background;
     &.bg {
-      background-color: $background !important;
+      //
+      background-size: contain !important;
+    }
+
+    .image-inner {
+      background-repeat: no-repeat !important;
+      background-size: contain !important;
+      background-position: center center !important;
+      position: absolute;
+      height: 100vh;
+      margin: auto;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 3;
+
       background-size: contain !important;
     }
   }
@@ -261,7 +290,6 @@ $title-size: calcDimension(79.435px);
     width: 50vw;
     right: 0;
     top: 0;
-    background-color: red;
     pointer-events: none;
     display: flex;
     justify-content: center;
@@ -283,52 +311,50 @@ $title-size: calcDimension(79.435px);
       }
     }
   }
-   .play-button--wrap {
+  .play-button--wrap {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    .play-button {
+      height: calcDimensionXs(50px);
+      pointer-events: all;
+    }
+  }
+  .video-container {
+    height: 100%;
+    width: 100%;
+    margin: auto;
+    background-color: $background;
+    display: flex;
+    justify-content: center;
+    .video {
       height: 100%;
+      aspect-ratio: 138/277;
+      position: relative;
+      border-radius: calcDimension(55px);
+      pointer-events: all;
+      padding: calcDimension(20px);
+      box-sizing: border-box;
+    }
+    .video--frame {
       position: absolute;
-      top: 0;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2;
-      .play-button {
-        height: calcDimensionXs(50px);
-        pointer-events: all;
-      }
-    }
-     .video-container {
       height: 100%;
-      width: 100%;
+      aspect-ratio: 138/277;
+      top: 0;
+      left: 0;
+      right: 0;
       margin: auto;
-      background-color: $background;
-      display: flex;
-      justify-content: center;
-      .video {
-        height: 100%;
-        aspect-ratio: 138/277;
-        position: relative;
-        border-radius: calcDimension(55px);
-        pointer-events: all;
-            padding:calcDimension(20px);
-            box-sizing: border-box;
-       
-      }
-       .video--frame {
-          position: absolute;
-          height: 100%;
-          aspect-ratio: 138/277;
-          top: 0;
-          left: 0;
-          right: 0;
-          margin: auto;
-      
 
-          background-image: url('/images/iphone-overlay.png');
-          background-size: contain;
-          background-repeat: no-repeat;
-        }
+      background-image: url('/images/iphone-overlay.png');
+      background-size: contain;
+      background-repeat: no-repeat;
     }
+  }
 }
 </style>
 <script setup>
@@ -345,7 +371,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger, Flip)
 
 const props = defineProps({
-  name: String
+  name: String,
+  modelValue: Number
 })
 
 const playingVideo = ref(false)
@@ -356,7 +383,16 @@ const scrollsection = ref(null)
 
 const duration = 0.4
 
-const currentSection = ref(0)
+const emit = defineEmits(['update:modelValue'])
+
+const currentSection = computed({
+  get() {
+    return props.modelValue
+  },
+  set(val) {
+    emit('update:modelValue', val)
+  }
+})
 
 const sectionsLength = SECTIONS[props.name].slice(1)?.length
 
@@ -375,14 +411,14 @@ watch(y, (v) => {
 const { top: scrollingUp, bottom: scrollingDown } = toRefs(directions)
 
 const timeout = () => {
-    return new Promise(resolve => setTimeout(resolve, 1000));
+  return new Promise((resolve) => setTimeout(resolve, 1000))
 }
 
 const onScrollUp = useThrottleFn(async () => {
   const i = currentSection.value
   if (i === 0) return
   if (i < 4) {
-    playingVideo.value = false;
+    playingVideo.value = false
   }
   const { horizontal: isHorizontal } = SECTIONS[props.name][i]
   currentSection.value = i - 1
@@ -390,13 +426,17 @@ const onScrollUp = useThrottleFn(async () => {
   if (isHorizontal) {
     nextTick(() => {
       gsap.to(`#image-big-${i - 1}-${id}`, { xPercent: 100, duration, ease: 'sine' })
-      if (i === 3)  gsap.to(`#description-${i - 1}-${id}`, { yPercent: 100, duration, ease: 'sine' })
- 
+      if (i === 3) gsap.to(`#description-${i - 1}-${id}`, { yPercent: 100, duration, ease: 'sine' })
     })
   } else {
     nextTick(() => {
+      //  if (i === 3) {
+      //     gsap.to(`#gradient-${i - 1}-${id}-1`, { yPercent: 100, duration, ease: 'sine' })
+      //      gsap.to(`#gradient-${i - 1}-${id}-2`, { yPercent: 100, duration, ease: 'sine' })
+      //   }
       gsap.to(`#image-big-${i - 1}-${id}`, { yPercent: 100, duration, ease: 'sine' })
       gsap.to(`#description-${i - 1}-${id}`, { yPercent: 100, duration, ease: 'sine' })
+       
     })
   }
 }, 100)
@@ -408,16 +448,20 @@ const onScrollDown = useThrottleFn(() => {
   currentSection.value = i + 1
   if (isHorizontal) {
     nextTick(() => {
-      gsap.to(`#image-big-${i}-${id}`, { xPercent: -100, duration, ease: 'sine', zIndex: 1 })
-           if (i === 2) gsap.to(`#description-${i}-${id}`, { yPercent: -100, duration, ease: 'sine', zIndex: 1 })
+      gsap.to(`#image-big-${i}-${id}`, { xPercent: -100, duration, ease: 'sine' })
+      if (i === 2) gsap.to(`#description-${i}-${id}`, { yPercent: -100, duration, ease: 'sine' })
     })
   } else {
     nextTick(() => {
-      gsap.to(`#image-big-${i}-${id}`, { yPercent: -100, duration, ease: 'sine', zIndex: 1 })
-      gsap.to(`#description-${i}-${id}`, { yPercent: -100, duration, ease: 'sine', zIndex: 1 })
+      //  if (i === 2) {
+      //     gsap.to(`#gradient-${i}-${id}-1`, { yPercent: -100, duration, ease: 'sine' })
+      //      gsap.to(`#gradient-${i}-${id}-2`, { yPercent: -100, duration, ease: 'sine' })
+      //   }
+      gsap.to(`#image-big-${i}-${id}`, { yPercent: -100, duration, ease: 'sine' })
+      gsap.to(`#description-${i}-${id}`, { yPercent: -100, duration, ease: 'sine' })
+        
     })
   }
-
 }, 100)
 
 watch(isScrolling, () => {

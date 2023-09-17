@@ -12,14 +12,14 @@
     <div class="more-content__wrap" :id="`more-content-${id}`" v-show="showMore" ref="scroller">
       <!-- HEADER -->
       <header class="show-more__header row justify-between items-center">
-        <Logo class="logo" style="cursor: pointer" @click="close" v-if="!isXs"/>
+        <Logo class="logo" style="cursor: pointer" @click="close" v-if="!isXs" :style="{visibility: currentSection === 0 ? 'visible' : 'hidden'}"/>
         <!-- Dummy div to force close button to right -->
         <div v-if="isXs"/>
         <close-button @click="close" style="padding: 4px" />
       </header>
       <!-- TITLE -->
-      <section-desktop v-if="showMore && !isXs" :name="name" />
-       <section-mobile v-else-if="showMore && isXs" :name="name" />
+      <section-desktop v-if="showMore && !isXs" :name="name" v-model="currentSection"/>
+       <section-mobile v-else-if="showMore && isXs" :name="name" v-model="currentSection"/>
        
     </div>
   </div>
@@ -90,6 +90,7 @@ const id = `id${Math.round(Math.random() * 1000000000)}`
 const close = () => {
   showMore.value = false
 }
+const currentSection = ref(0)
 
 const {isXs} = useScreen();
 

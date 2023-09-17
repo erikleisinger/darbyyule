@@ -211,6 +211,7 @@ $scrollsection-height: calc(100 * var(--vh, 1vh));
     top: 0;
     left: -100vw;
     pointer-events: none;
+      width: 100vw;
   }
   .image-container {
     height: min(100vw, 40vh);
@@ -240,7 +241,7 @@ $scrollsection-height: calc(100 * var(--vh, 1vh));
     position: fixed;
     top: 0;
     height: inherit;
-
+     background: v-bind(imgBg);
     width: 100vw;
 
     .image-inner {
@@ -254,7 +255,7 @@ $scrollsection-height: calc(100 * var(--vh, 1vh));
       left: 0;
       right: 0;
 
-      background-color: $background !important;
+ 
       background-size: contain !important;
     }
     .play-button--wrap {
@@ -317,8 +318,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger, Flip)
 
 const props = defineProps({
-  name: String
+  name: String,
+  modelValue: Number,
 })
+
+const imgBg = computed(() => currentSection.value === 3 ? 'linear-gradient(180deg, #887BAD 0%, #FFFCF8 100%)' : '')
 
 const playingVideo = ref(false)
 
@@ -328,7 +332,16 @@ const scrollsection = ref(null)
 
 const duration = 0.4
 
-const currentSection = ref(0)
+const emit = defineEmits(['update:modelValue'])
+
+const currentSection = computed({
+  get() {
+    return props.modelValue
+  },
+  set(val) {
+    emit('update:modelValue', val)
+  }
+})
 
 const sectionsLength = SECTIONS[props.name].slice(1)?.length
 
