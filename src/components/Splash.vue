@@ -184,8 +184,7 @@ import Logo from './Logo.vue'
 import ColorButton from './Buttons/ColorButton.vue'
 import ArrowDown from './icons/ArrowDown.vue'
 import { useElementBounding } from '@vueuse/core'
-import { ref, defineEmits, onMounted } from 'vue'
-import gsap from 'gsap'
+import { ref,  onMounted } from 'vue'
 
 const surname = ref(null)
 const nav = ref(null)

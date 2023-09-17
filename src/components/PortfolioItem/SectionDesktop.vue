@@ -362,7 +362,7 @@ import ColorButton from '../Buttons/ColorButton.vue'
 import ContentArrowDown from '../icons/ContentArrowDown.vue'
 import Play from '../icons/Play.vue'
 import { SECTIONS } from '@/constants/content'
-import { useScroll, toRefs, useThrottleFn, useEventListener } from '@vueuse/core'
+import { useScroll, toRefs, useThrottleFn } from '@vueuse/core'
 import { getImageUrl } from '@/utils/url'
 import { ref, nextTick, watch, computed } from 'vue'
 import gsap from 'gsap'
@@ -430,10 +430,6 @@ const onScrollUp = useThrottleFn(async () => {
     })
   } else {
     nextTick(() => {
-      //  if (i === 3) {
-      //     gsap.to(`#gradient-${i - 1}-${id}-1`, { yPercent: 100, duration, ease: 'sine' })
-      //      gsap.to(`#gradient-${i - 1}-${id}-2`, { yPercent: 100, duration, ease: 'sine' })
-      //   }
       gsap.to(`#image-big-${i - 1}-${id}`, { yPercent: 100, duration, ease: 'sine' })
       gsap.to(`#description-${i - 1}-${id}`, { yPercent: 100, duration, ease: 'sine' })
        
@@ -453,10 +449,6 @@ const onScrollDown = useThrottleFn(() => {
     })
   } else {
     nextTick(() => {
-      //  if (i === 2) {
-      //     gsap.to(`#gradient-${i}-${id}-1`, { yPercent: -100, duration, ease: 'sine' })
-      //      gsap.to(`#gradient-${i}-${id}-2`, { yPercent: -100, duration, ease: 'sine' })
-      //   }
       gsap.to(`#image-big-${i}-${id}`, { yPercent: -100, duration, ease: 'sine' })
       gsap.to(`#description-${i}-${id}`, { yPercent: -100, duration, ease: 'sine' })
         
