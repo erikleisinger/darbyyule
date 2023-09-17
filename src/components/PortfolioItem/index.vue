@@ -89,6 +89,7 @@ const id = `id${Math.round(Math.random() * 1000000000)}`
 
 const close = () => {
   showMore.value = false
+  currentSection.value = 0;
 }
 const currentSection = ref(0)
 

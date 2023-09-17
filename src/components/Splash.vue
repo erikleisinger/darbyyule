@@ -76,16 +76,16 @@ $button-border-radius-xs: calcDimensionXs(0.254);
     font-weight: 700;
   }
   .splash--h2 {
-    letter-spacing: calcDimensionXs(-0.05907);
+    // letter-spacing: calcDimensionXs(-0.05907);
     font-size: calcDimensionXs(0.6978);
-    margin-top: calcDimensionXs(0.4);
+    margin-top: calc(-1 * calcDimension(0.1));
     font-family: $font-subtitle;
     @include sm {
       margin-left: calcDimension(0.1);
       font-size: calcDimension(0.5656);
 
-      letter-spacing: calcDimension(-0.0484);
-      margin-top: calcDimension(0.04);
+      // letter-spacing: calcDimension(-0.0484);
+      margin-top: calc(-1 * calcDimension(0.3));
     }
 
     color: #9e5170;
