@@ -5,7 +5,10 @@
     <div v-for="(section, index) in SECTIONS[name].slice(1)" :key="index">
       <div class="row section-container">
         <div class="description-container" :id="`description-${index}-${id}`">
-          <div class="gradient-container"  :style="{visibility: index >= 2 && currentSection >=3 ? 'visible' : 'hidden'}" />
+          <div
+            class="gradient-container"
+            :style="{ visibility: index >= 2 && currentSection >= 3 ? 'visible' : 'hidden' }"
+          />
           <span class="title--wrap" data-flip-id="title">{{ section?.title }}</span>
 
           <div class="text--wrap">
@@ -32,7 +35,10 @@
           :id="`image-big-${index}-${id}`"
           v-if="!section.video || !playingVideo"
         >
-          <div class="gradient-container"  :style="{visibility: index >= 2 && currentSection >=3 ? 'visible' : 'hidden'}" />
+          <div
+            class="gradient-container"
+            :style="{ visibility: index >= 2 && currentSection >= 3 ? 'visible' : 'hidden', width: 'calc(50vw + 1px)' }"
+          />
           <div class="image-inner" :style="{ background: `url(${getImageUrl(section.img)})` }" />
           <div
             class="play-button--wrap"
@@ -43,6 +49,9 @@
         </div>
 
         <div class="video-container" v-if="section.video && playingVideo">
+            <div
+            class="gradient-container"
+          />
           <iframe
             class="video"
             :src="section.videoUrl"
@@ -107,7 +116,8 @@ $title-size: calcDimension(79.435px);
   .gradient-container {
     position: absolute;
     top: 0;
-    height: 50vh;
+    right: 0;
+    height: calcDimension(300px);
     width: 50vw;
     background: linear-gradient(180deg, #887bad 0%, #fffcf8 100%);
     z-index: 1;
@@ -319,7 +329,7 @@ $title-size: calcDimension(79.435px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2;
+    z-index: 4;
     .play-button {
       height: calcDimensionXs(50px);
       pointer-events: all;
@@ -329,12 +339,13 @@ $title-size: calcDimension(79.435px);
     height: 100%;
     width: 100%;
     margin: auto;
-    background-color: $background;
     display: flex;
     justify-content: center;
+    background: $background;
     .video {
       height: 100%;
       aspect-ratio: 138/277;
+      z-index: 1;
       position: relative;
       border-radius: calcDimension(55px);
       pointer-events: all;
@@ -349,6 +360,7 @@ $title-size: calcDimension(79.435px);
       left: 0;
       right: 0;
       margin: auto;
+      z-index: 1;
 
       background-image: url('/images/iphone-overlay.png');
       background-size: contain;
@@ -432,7 +444,6 @@ const onScrollUp = useThrottleFn(async () => {
     nextTick(() => {
       gsap.to(`#image-big-${i - 1}-${id}`, { yPercent: 100, duration, ease: 'sine' })
       gsap.to(`#description-${i - 1}-${id}`, { yPercent: 100, duration, ease: 'sine' })
-       
     })
   }
 }, 100)
@@ -445,13 +456,21 @@ const onScrollDown = useThrottleFn(() => {
   if (isHorizontal) {
     nextTick(() => {
       gsap.to(`#image-big-${i}-${id}`, { xPercent: -100, duration, ease: 'sine' })
-      if (i === 2) gsap.to(`#description-${i}-${id}`, { yPercent: -100, duration, ease: 'sine' })
+      if (i === 2) {
+        gsap.to(`#description-${i}-${id}`, { yPercent: -100, duration, ease: 'sine' })
+        gsap.from(`.gradient-container`, {
+          opacity: 0,
+          duration,
+          ease: 'sine',
+          zIndex: 1,
+          delay: 0.3
+        })
+      }
     })
   } else {
     nextTick(() => {
       gsap.to(`#image-big-${i}-${id}`, { yPercent: -100, duration, ease: 'sine' })
       gsap.to(`#description-${i}-${id}`, { yPercent: -100, duration, ease: 'sine' })
-        
     })
   }
 }, 100)

@@ -322,7 +322,7 @@ const props = defineProps({
   modelValue: Number,
 })
 
-const imgBg = computed(() => currentSection.value === 3 ? 'linear-gradient(180deg, #887BAD 0%, #FFFCF8 100%)' : '')
+const imgBg = computed(() => currentSection.value >= 3 ? 'linear-gradient(180deg, #887BAD 0%, #FFFCF8 100%)' : '')
 
 const playingVideo = ref(false)
 
@@ -388,6 +388,7 @@ const onScrollDown = useThrottleFn(() => {
   {
     nextTick(() => {
       gsap.to(`#image-big-${i}-${id}`, { xPercent: 100, duration, ease: 'sine', zIndex: 1 })
+
     })
   }
   if (i > 2) return
