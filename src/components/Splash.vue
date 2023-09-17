@@ -1,6 +1,6 @@
 <template>
-  <section class="splash__container full-width column justify-center">
-    <div class="splash-inner">
+  <section class="splash__container full-width column justify-center items-center">
+    <div class="splash-inner column items-center">
       <div class="row justify-center" ref="logo">
         <Logo class="logo" />
       </div>
@@ -9,7 +9,7 @@
         <h2 class="splash--h2">UI | UX Designer</h2>
       </div>
 
-      <nav class="splash--nav row full-width" ref="nav">
+      <nav class="splash--nav row full-width" ref="nav" style="visibility: hidden">
         <div class="row splash-nav--inner">
           <button class="button--plain" @click="$router.push({ name: 'about' })">About</button>
 
@@ -32,8 +32,8 @@
   @return calc($title-size-sm * $n);
 }
 
-// $title-size: min(9.9vw, 150px);
-$title-size: 9.9vw;
+$title-size: min(9.9vw, 130px);
+// $title-size: 9.9vw;
 
 $title-size-sm: 11.85vw;
 
@@ -55,7 +55,7 @@ $button-border-radius-xs: calcDimensionXs(0.254);
     width: fit-content;
     box-sizing: border-box;
     @include sm {
-      margin: auto;
+      // margin: auto;
       margin-top: calcDimension(0.2323);
       width: calcDimension(8.4828);
     }
@@ -90,9 +90,9 @@ $button-border-radius-xs: calcDimensionXs(0.254);
 
     color: #9e5170;
   }
-  @include sm {
-    justify-content: unset;
-  }
+  // @include sm {
+  //   justify-content: unset;
+  // }
   .title--wrap {
     align-items: center;
 
@@ -185,6 +185,7 @@ import ColorButton from './Buttons/ColorButton.vue'
 import ArrowDown from './icons/ArrowDown.vue'
 import { useElementBounding } from '@vueuse/core'
 import { ref,  onMounted } from 'vue'
+import gsap from 'gsap'
 
 const surname = ref(null)
 const nav = ref(null)
@@ -196,28 +197,19 @@ const { x: navX, y, top } = useElementBounding(nav)
 
 const logo = ref(null)
 
-// onMounted(() => {
-//   const tl = gsap.timeline()
-//   tl.fromTo(
-//     logo.value,
-//     {
-//       y: -40,
-//       x: 20,
-//       rotation: 280,
-//       rotationY: 50,
-//       opacity: 0,
-//     },
-//     {
-//       x: 0,
-//       y:20,
-//       opacity: 1,
-//       rotation: 360,
-//       rotationY: 360,
-//       duration:2.5,
-//       ease: 'sine'
-//     },
-//     0
+onMounted(() => {
+  const tl = gsap.timeline()
+  tl.fromTo(
+    '.splash__container',
+    {
+      opacity: 0,
+    },
+    {
+      opacity: 1,
+      duration: 0.8,
+    },
+    0
 
-//   )
-// })
+  )
+})
 </script>

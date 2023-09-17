@@ -71,7 +71,7 @@ export const SECTIONS = {
       This piece introduces the audience to my niche and gives them a chance to dive deeper  and explore my brand. It also opens up opportunities to interact with the audience and drive sales/longterm users to my projects in the future. `,
       horizontal: true,
       video: true,
-      videoUrl: 'https://www.youtube.com/embed/o_515mx0ERs?autoplay=1&loop=1',
+      videoUrl: 'https://www.youtube.com/embed/0osFtmN8NcQ?si=AXU-fG5zfkOuZ3dX?autoplay=1&loop=1',
     }
   ],
   [SECTION_NAMES.DARKHORSE]: [

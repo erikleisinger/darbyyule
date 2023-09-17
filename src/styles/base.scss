@@ -33,21 +33,15 @@ body {
   }
 
   @font-face {
-    font-family: 'Helvetica';
+    font-family: 'Overused Grotesk';
     font-style: regular;
-    font-weight: 300;
-    src: url('/fonts/Helvetica-Neue.ttf') format('woff2'), 
+    src: url('fonts/OverusedGrotesk-Light.otf') format('woff2'), 
   }
 
-  @font-face {
-    font-family: 'Helvetica';
-    font-style: regular;
-    font-weight: 200;
-    src: url('fonts/Helvetica-Light.ttf') format('woff2'), 
-  }
+
 
 $font-title: 'Spartan', sans-serif;
-$font-subtitle: 'Helvetica', sans-serif;
+$font-subtitle: 'Overused Grotesk', sans-serif;
 
 $xs-reference: 390px;
 $sm-reference: 1512px;
