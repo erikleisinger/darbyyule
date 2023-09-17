@@ -5,7 +5,7 @@
       <!-- {{ index }} -->
     </div>
     <div
-      class="row section-container"
+      class="row section-container image-container"
       :id="`image-container-${id}`"
       v-for="(section, index) in SECTIONS[name].slice(1)"
       :key="index"
@@ -15,7 +15,43 @@
         class="image-big"
         :id="`image-big-${index}-${id}`"
       >
-        <div class="image-inner" :style="{ background: `url(${getImageUrl(section.img)})` }" />
+        <div class="play-button--wrap" v-if="!!section.video && !playingVideo">
+          <play class="play-button" @click="playingVideo = true" />
+        </div>
+        <div
+          class="image-inner"
+          :style="{ background: `url(${getImageUrl(section.img)})` }"
+          v-if="!playingVideo"
+        />
+        <div class="video-container" v-if="section.video && playingVideo">
+          <iframe
+            class="video"
+            :src="section.videoUrl"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            height="100%"
+          ></iframe>
+          <div class="video--frame"/>
+        </div>
+      </div>
+
+      <div class="arrow-horiz__container" v-if="!!section.horizontal && currentSection > 2">
+        <arrow-down
+          class="arrow left"
+          :animated="false"
+          :style="{
+            visibility: currentSection >= SECTIONS[name].length - 1 ? 'hidden' : 'visible'
+          }"
+          @click="onScrollDown"
+        />
+        <arrow-down
+          class="arrow right"
+          :animated="false"
+          :style="{ visibility: currentSection < 4 ? 'hidden' : 'visible' }"
+          @click="onScrollUp"
+        />
       </div>
     </div>
 
@@ -27,9 +63,9 @@
           :key="index"
           data-flip-id="title-wrap"
         >
-          <span v-if="currentSection === index" class="title--inner" data-flip-id="title">{{
-            section?.title
-          }}</span>
+          <span v-if="currentSection === index" class="title--inner" data-flip-id="title"
+            >{{ section?.title }}
+          </span>
         </div>
 
         <div class="text--wrap" v-for="(section, index) in SECTIONS[name]" :key="index">
@@ -38,7 +74,9 @@
           >
         </div>
         <div v-if="currentSection >= 3" class="about-container">
-          <color-button class="about-button" @click="$router.push({name: 'about'})">About</color-button>
+          <color-button class="about-button" @click="$router.push({ name: 'about' })"
+            >About</color-button
+          >
         </div>
       </div>
       <div v-if="currentSection === 0" class="header-images--wrap">
@@ -59,7 +97,6 @@
   </div>
 </template>
 <style lang="scss" scoped>
-
 $scrollsection-height: calc(100 * var(--vh, 1vh));
 .scrollsection {
   height: $scrollsection-height;
@@ -140,9 +177,9 @@ $scrollsection-height: calc(100 * var(--vh, 1vh));
       font-weight: 600;
       border-radius: calcDimensionXs(12.4px) 0px calcDimensionXs(12.4px) 0px;
       padding-top: calcDimensionXs(4px);
-      pointer-events:all;
+      pointer-events: all;
     }
-    flex-grow:1;
+    flex-grow: 1;
   }
 
   .header-images--wrap {
@@ -175,10 +212,35 @@ $scrollsection-height: calc(100 * var(--vh, 1vh));
     left: -100vw;
     pointer-events: none;
   }
+  .image-container {
+    height: min(100vw, 40vh);
+    .arrow-horiz__container {
+      position: absolute;
+      height: inherit;
+      width: 100vw;
+      transform: translate(100%, 0%);
+      display: flex;
+      z-index: 1;
+      justify-content: space-between;
+      align-items: center;
+      .arrow {
+        pointer-events: all;
+        height: calcDimensionXs(10px);
+        width: calcDimensionXs(50px);
+        &.left {
+          transform: rotate(90deg);
+        }
+        &.right {
+          transform: rotate(270deg);
+        }
+      }
+    }
+  }
   .image-big {
     position: fixed;
     top: 0;
-    height: min(100vw, 40vh);
+    height: inherit;
+
     width: 100vw;
 
     .image-inner {
@@ -195,11 +257,56 @@ $scrollsection-height: calc(100 * var(--vh, 1vh));
       background-color: $background !important;
       background-size: contain !important;
     }
+    .play-button--wrap {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      .play-button {
+        height: calcDimensionXs(50px);
+        pointer-events: all;
+      }
+    }
+    .video-container {
+      height: 100%;
+      width: 100%;
+      margin: auto;
+      background-color: $background;
+      display: flex;
+      justify-content: center;
+      .video {
+        height: 100%;
+        aspect-ratio: 128/277;
+        position: relative;
+        border-radius: 30px;
+        pointer-events: all;
+       
+      }
+       .video--frame {
+          position: absolute;
+          height: 100%;
+          aspect-ratio: 147/277;
+          top: 0;
+          left: 0;
+          right: 0;
+          margin: auto;
+
+          background-image: url('/images/iphone-overlay.png');
+          background-size: contain;
+          background-repeat: no-repeat;
+        }
+    }
   }
 }
 </style>
 <script setup>
 import ColorButton from '../Buttons/ColorButton.vue'
+import ArrowDown from '../icons/ArrowDown.vue'
+import Play from '../icons/Play.vue'
 import { SECTIONS } from '@/constants/content'
 import { useScroll, toRefs, useThrottleFn, useEventListener } from '@vueuse/core'
 import { getImageUrl } from '@/utils/url'
@@ -212,6 +319,8 @@ gsap.registerPlugin(ScrollTrigger, Flip)
 const props = defineProps({
   name: String
 })
+
+const playingVideo = ref(false)
 
 const id = `id${Math.round(Math.random() * 1000000000)}`
 
@@ -238,14 +347,13 @@ watch(y, (v) => {
 const { top: scrollingUp, bottom: scrollingDown } = toRefs(directions)
 
 const onScrollUp = useThrottleFn(() => {
+  playingVideo.value = false
   const i = currentSection.value
-  console.log('scrollup: ', i)
   if (i === 0) return
   const state = Flip.getState('.title--wrap,.title--inner,.text--wrap,.text--inner')
   currentSection.value = i - 1
 
   nextTick(() => {
-    console.log('hide: ', i)
     gsap.to(`#image-big-${i - 1}-${id}`, { xPercent: -100, duration, ease: 'sine' })
   })
   if (i > 3) return
@@ -262,7 +370,6 @@ const onScrollUp = useThrottleFn(() => {
 const onScrollDown = useThrottleFn(() => {
   const i = currentSection.value
   if (i === sectionsLength) return
-  console.log('scroll down: ', i)
   const state = Flip.getState('.title--wrap,.title--inner,.text--wrap,.text--inner')
   currentSection.value = i + 1
   {

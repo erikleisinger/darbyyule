@@ -1,52 +1,73 @@
 <template>
   <div class="scrollsection" ref="scrollsection">
     <div class="scroll-content--buffer" />
-    <!-- v-for="(section, index) in SECTIONS[name].slice(1)"
-      :key="index" -->
-    <div
-      class="scroll-section--invis"
-      
-      :style="{height:bufferHeight}"
-    >
-      <!-- {{ index }} -->
-    </div>
-    <div
-      class="row section-container"
-      :id="`image-container-${id}`"
-      v-for="(section, index) in SECTIONS[name].slice(1)"
-      :key="index"
-    >
-      <div
-        :class="{ active: currentSection === index, horizontal: !!section.horizontal }"
-        class="image-big"
-        :id="`image-big-${index}-${id}`"
-        :style="{ background: `url(${getImageUrl(section.img)})` }"
-      />
-    </div>
+    <div class="scroll-section--invis" :style="{ height: bufferHeight }"></div>
+    <div v-for="(section, index) in SECTIONS[name].slice(1)" :key="index">
+      <div class="row section-container">
+        {{ currentSection }}
+        <div class="description-container" :id="`description-${index}-${id}`">
+          <span class="title--wrap" data-flip-id="title">{{ section?.title }}</span>
 
-    <div
-      class="column justify-center items-center text--area"
-      :class="{ big: currentSection === 0 }"
-    >
-      <div style="width: fit-content; height: fit-content; ">
+          <div class="text--wrap">
+            <span class="text--inner" data-flip-id="text"> {{ section?.text }}</span>
+          </div>
+          <div v-if="currentSection > 2" class="about-container">
+            <color-button
+              class="button--color about-button"
+              @click="$router.push({ name: 'about' })"
+              >About</color-button
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row section-container" :id="`image-container-${id}`">
         <div
-          class="title--wrap"
-          v-for="(section, index) in SECTIONS[name]"
-          :key="index"
-          data-flip-id="title-wrap"
+          :class="{
+            active: currentSection === index,
+            horizontal: !!section.horizontal,
+            bg: !!section.bg
+          }"
+          class="image-big"
+          :id="`image-big-${index}-${id}`"
+          :style="{ background: `url(${getImageUrl(section.img)})` }"
+          v-if="!section.video || !playingVideo"
         >
-          <span v-if="currentSection === index" class="title--inner" data-flip-id="title">{{
-            section?.title
-          }}</span>
+<div class="play-button--wrap" v-if="!playingVideo && currentSection > 2 && !!section.video">
+          <play class="play-button" @click="playingVideo =  true" />
         </div>
+        </div>
+   
+          <div class="video-container" v-if="section.video && playingVideo">
+          <iframe
+            class="video"
+            :src="section.videoUrl"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            height="100%"
+          ></iframe>
+          <div class="video--frame">
+                    
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column justify-center items-center text--area big" v-if="currentSection === 0">
+      <div style="width: fit-content; height: fit-content">
+        <div class="title--wrap" data-flip-id="title-wrap">
+          <div class="title--wrap" v-if="currentSection === 0">
+            <span class="title--inner" data-flip-id="title">{{ SECTIONS[name][0]?.title }}</span>
+          </div>
 
-        <div class="text--wrap" v-for="(section, index) in SECTIONS[name]" :key="index">
-          <span v-if="currentSection === index" class="text--inner" data-flip-id="text">
-            {{ SECTIONS[name][currentSection]?.text }}</span
-          >
-        </div>
-        <div v-if="currentSection > 2" class="about-container">
-          <color-button class="button--color about-button" @click="$router.push({name: 'about'})">About</color-button>
+          <div v-if="currentSection > 2" class="about-container">
+            <color-button
+              class="button--color about-button"
+              @click="$router.push({ name: 'about' })"
+              >About</color-button
+            >
+          </div>
         </div>
       </div>
       <div v-if="currentSection === 0" class="header-images--wrap">
@@ -63,10 +84,15 @@
           :style="{ background: `url(${getImageUrl(SECTIONS[name][0].img)})` }"
         />
       </div>
+      <div class="arrow-container">
+        <content-arrow-down class="arrow" @click="onScrollDown" />
+      </div>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
+
+$title-size: calcDimension(79.435px);
 .scrollsection {
   height: 100vh;
   width: 100vw;
@@ -88,7 +114,7 @@
     padding: 0px calcDimension(128px);
     box-sizing: border-box;
     &.big {
-        padding: 0px calcDimension(108px);
+      padding: 0px calcDimension(108px);
       .title--wrap {
         font-style: italic;
         top: 0;
@@ -96,7 +122,6 @@
         font-family: $font-subtitle;
         text-transform: uppercase;
         font-size: calcDimension(97.02px);
-       
       }
       width: 100%;
     }
@@ -114,9 +139,8 @@
     font-size: 9vh;
     line-height: 9.06vh;
     font-family: $font-title;
-    font-size: calcDimension(79.435px);
+    font-size: $title-size;
     font-weight: 600;
-    
   }
   .text--wrap {
     font-size: calcDimension(20px);
@@ -132,8 +156,8 @@
     align-items: center;
     position: absolute;
     bottom: 0;
-    left:0;
-    box-sizing:border-box;
+    left: 0;
+    box-sizing: border-box;
     margin-top: calcDimension(70px);
     margin-bottom: calcDimension(40.03px);
     .about-button {
@@ -157,10 +181,12 @@
     margin-top: 6.6vh;
     .header-image {
       width: 100%;
+      max-width: 1100px;
       box-sizing: border-box;
       aspect-ratio: 1/1;
       border-radius: 16px;
       background-size: contain !important;
+      margin: auto;
     }
   }
 
@@ -174,10 +200,30 @@
   .section-container {
     position: fixed;
     top: 0;
-    right: 0;
+
     pointer-events: none;
     height: 100vh;
     width: 50vw;
+    &:nth-child(odd) {
+      left: 0;
+    }
+    &:nth-child(even) {
+      right: 0;
+    }
+
+    .description-container {
+      width: 50vw;
+      height: 100vh;
+      position: fixed;
+      top: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: $background;
+      padding: 0px calcDimension(128px);
+      box-sizing: border-box;
+    }
   }
   .image-big {
     position: fixed;
@@ -193,7 +239,8 @@
     background-repeat: no-repeat !important;
     background-size: cover !important;
     background-position: center center !important;
-    &.horizontal {
+    &.horizontal,
+    &.bg {
       background-color: $background !important;
       background-size: contain !important;
     }
@@ -220,10 +267,74 @@
     justify-content: center;
     align-items: center;
   }
+
+  .arrow-container {
+    margin-top: calcDimension(79.8px);
+
+    .arrow {
+      height: calcDimension(109px);
+      width: calcDimension(117px);
+      cursor: pointer;
+      pointer-events: all;
+      z-index: 100;
+      transition: transform 0.3s;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+   .play-button--wrap {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+      .play-button {
+        height: calcDimensionXs(50px);
+        pointer-events: all;
+      }
+    }
+     .video-container {
+      height: 100%;
+      width: 100%;
+      margin: auto;
+      background-color: $background;
+      display: flex;
+      justify-content: center;
+      .video {
+        height: 100%;
+        aspect-ratio: 138/277;
+        position: relative;
+        border-radius: calcDimension(55px);
+        pointer-events: all;
+            padding:calcDimension(20px);
+            box-sizing: border-box;
+       
+      }
+       .video--frame {
+          position: absolute;
+          height: 100%;
+          aspect-ratio: 138/277;
+          top: 0;
+          left: 0;
+          right: 0;
+          margin: auto;
+      
+
+          background-image: url('/images/iphone-overlay.png');
+          background-size: contain;
+          background-repeat: no-repeat;
+        }
+    }
 }
 </style>
 <script setup>
 import ColorButton from '../Buttons/ColorButton.vue'
+import ContentArrowDown from '../icons/ContentArrowDown.vue'
+import Play from '../icons/Play.vue'
 import { SECTIONS } from '@/constants/content'
 import { useScroll, toRefs, useThrottleFn, useEventListener } from '@vueuse/core'
 import { getImageUrl } from '@/utils/url'
@@ -237,8 +348,7 @@ const props = defineProps({
   name: String
 })
 
-
-
+const playingVideo = ref(false)
 
 const id = `id${Math.round(Math.random() * 1000000000)}`
 
@@ -250,10 +360,6 @@ const currentSection = ref(0)
 
 const sectionsLength = SECTIONS[props.name].slice(1)?.length
 
-useEventListener(scrollsection, 'scroll', () => {
-  console.log('SCROLLING')
-})
-
 const { isScrolling, directions, y } = useScroll(scrollsection)
 
 const bufferHeight = computed(() => {
@@ -262,66 +368,56 @@ const bufferHeight = computed(() => {
 
 watch(y, (v) => {
   if (v === 0) {
-    scrollsection.value.scrollTop = 1;
+    scrollsection.value.scrollTop = 1
   }
 })
 
 const { top: scrollingUp, bottom: scrollingDown } = toRefs(directions)
 
-const onScrollUp = useThrottleFn(() => {
+const timeout = () => {
+    return new Promise(resolve => setTimeout(resolve, 1000));
+}
+
+const onScrollUp = useThrottleFn(async () => {
   const i = currentSection.value
-  console.log('scrollup: ', i)
-  if (i === 0 ) return;
-  const state = Flip.getState('.title--wrap,.title--inner,.text--wrap,.text--inner')
+  if (i === 0) return
+  if (i < 4) {
+    playingVideo.value = false;
+  }
   const { horizontal: isHorizontal } = SECTIONS[props.name][i]
   currentSection.value = i - 1
 
   if (isHorizontal) {
     nextTick(() => {
       gsap.to(`#image-big-${i - 1}-${id}`, { xPercent: 100, duration, ease: 'sine' })
+      if (i === 3)  gsap.to(`#description-${i - 1}-${id}`, { yPercent: 100, duration, ease: 'sine' })
+ 
     })
   } else {
     nextTick(() => {
-      console.log('hide: ', i)
       gsap.to(`#image-big-${i - 1}-${id}`, { yPercent: 100, duration, ease: 'sine' })
+      gsap.to(`#description-${i - 1}-${id}`, { yPercent: 100, duration, ease: 'sine' })
     })
   }
-  if (i  > 3) return
-  nextTick(() => {
-    Flip.from(state, {
-      targets: '.title--inner,.text--inner',
-      fade: true,
-      nested: true,
-      duration: 1,
-    })
-  })
 }, 100)
 
 const onScrollDown = useThrottleFn(() => {
   const i = currentSection.value
-  console.log('scrolldown: ', i)
-  if (i === sectionsLength) return;
-  const state = Flip.getState('.title--wrap,.title--inner,.text--wrap,.text--inner')
+  if (i === sectionsLength) return
   const { horizontal: isHorizontal } = SECTIONS[props.name][i + 1]
   currentSection.value = i + 1
   if (isHorizontal) {
     nextTick(() => {
       gsap.to(`#image-big-${i}-${id}`, { xPercent: -100, duration, ease: 'sine', zIndex: 1 })
+           if (i === 2) gsap.to(`#description-${i}-${id}`, { yPercent: -100, duration, ease: 'sine', zIndex: 1 })
     })
   } else {
     nextTick(() => {
       gsap.to(`#image-big-${i}-${id}`, { yPercent: -100, duration, ease: 'sine', zIndex: 1 })
+      gsap.to(`#description-${i}-${id}`, { yPercent: -100, duration, ease: 'sine', zIndex: 1 })
     })
   }
-  if (i  > 2) return
-  nextTick(() => {
-    Flip.from(state, {
-      targets: '.title--inner,.text--inner',
-      fade: true,
-      nested: true,
-      duration: 1,
-    })
-  })
+
 }, 100)
 
 watch(isScrolling, () => {
@@ -331,7 +427,4 @@ watch(isScrolling, () => {
     onScrollDown()
   }
 })
-
-
-
 </script>

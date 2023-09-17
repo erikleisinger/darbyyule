@@ -70,6 +70,8 @@ export const SECTIONS = {
 
       This piece introduces the audience to my niche and gives them a chance to dive deeper  and explore my brand. It also opens up opportunities to interact with the audience and drive sales/longterm users to my projects in the future. `,
       horizontal: true,
+      video: true,
+      videoUrl: 'https://www.youtube.com/embed/o_515mx0ERs?autoplay=1&loop=1',
     }
   ],
   [SECTION_NAMES.DARKHORSE]: [
@@ -95,8 +97,8 @@ export const SECTIONS = {
     {
       img: 'darkhorse_execution.png',
       title: 'Execution',
-      text: 'Darkhorse Emergency is an offshoot of the Edmonton, AB based company Darkhorse Analytics. Darkhorse Emergency provides analytics to many Canadian first response units such as Fire Services and Ambulances. My UX Team and I were tasked with a total design overhaul of their Deployment tool which is mainly used for planning and lobbying for funds to stakeholders. I was tasked with redesigning the dashboard. '
-  
+      text: 'Clear, concise, and accessible. In the final design, you can see that all of the colour and buttons have been designed. This version meets all accessibility standards as well as needs very little explanation for new users. The main actions a user can perform are on the left side of the page while the statistics are found up top. It encourages users to add a station or compare the scenario that they have created. This meets and improves on Darkhorse Emergency’s brand guidelines as well as meets accessibility standards.',
+      bg: true,
     }
   ],
   [SECTION_NAMES.FOODHUB]: [

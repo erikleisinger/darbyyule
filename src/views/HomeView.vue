@@ -17,6 +17,10 @@ const goContent = () => {
   y.value = contentY.value + scrollTop
 }
 
+const goSplash = () => {
+  y.value = 0;
+}
+
 
 </script>
 
@@ -32,6 +36,6 @@ const goContent = () => {
 <template>
   <main class="main-content" ref="main" id="main">
     <Splash @content="goContent"/>
-    <Content ref="content"/>
+    <Content ref="content" @scrollUp="goSplash"/>
   </main>
 </template>

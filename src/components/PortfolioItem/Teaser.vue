@@ -27,7 +27,9 @@
   width: 100%;
   aspect-ratio: 16/9;
   box-sizing: border-box;
-  border-radius: 12px;
+  @include sm {
+     border-radius: 12px;
+  }
   position: relative;
   overflow: hidden;
   cursor: pointer;
@@ -52,7 +54,6 @@
     color: $pink;
     background-color: transparent;
     z-index: 2;
-    // padding: var(--space-sm);
     font-size: calcDimensionXs(50.455px);
     line-height: calcDimensionXs(50.455px);
     padding: calcDimensionXs(14.09px);

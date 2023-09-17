@@ -19,13 +19,18 @@
       </div>
     </main>
     <content-footer v-if="!isXs"/>
+    <div v-else class="hero-arrow__container">
+      <hero-arrow-up class="arrow-up" @click="emit('scrollUp')"/>
+    </div>
   </section>
 </template>
 <style lang="scss" scoped>
 .content__section {
   margin: auto;
+  margin-top: calcDimensionXs(109px);
   @include sm {
     width: calcDimension(1274px);
+    margin-top: unset;
   }
   box-sizing: border-box;
 }
@@ -68,7 +73,21 @@
           margin-bottom: calcDimension(75px);
     }
   }
+
 }
+  .hero-arrow__container {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    margin-top: calcDimensionXs(60px);
+    .arrow-up {
+      cursor: pointer;
+      height: calcDimensionXs(28px);
+      width: calcDimensionXs(48px);
+
+    }
+
+  }
 </style>
 <script setup>
 import { SECTION_NAMES } from '../constants/content'
@@ -78,9 +97,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 import ContentFooter from './ContentFooter.vue'
 import PortfolioItem from './PortfolioItem/index.vue'
+import HeroArrowUp from './icons/HeroArrowUp.vue'
 import { onMounted } from 'vue'
 
 const {isXs} = useScreen();
+
+const emit = defineEmits(['scrollUp'])
 
 onMounted(() => {
   gsap.from('#content-h1', {

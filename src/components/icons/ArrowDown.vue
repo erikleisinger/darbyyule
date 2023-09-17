@@ -9,9 +9,17 @@
     import gsap from 'gsap'
     import {onMounted,ref} from 'vue'
 
+    const props = defineProps({
+        animated: {
+            default: true,
+            type: Boolean,
+        }
+    })
+
     const arrow = ref(null);
 
     onMounted(() => {
+        if (!props.animated) return;
         const tl = gsap.timeline({repeat: -1});
         tl.to(arrow.value, {
             y: -5,

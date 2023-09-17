@@ -23,11 +23,11 @@
   }
   .color-button {
     border-radius: calcDimension(8.407px) 0px calcDimension(8.407px) 0px;
-    width: calcDimension(124.72px);
+    width: calcDimension(142.236px);
     font-size: calcDimension(31.054px);
     font-family: $font-subtitle;
     font-weight: 200;
-    height: calcDimension(40.35px);
+    height: calcDimension(48.28px);
   }
 
 }
