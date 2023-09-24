@@ -38,7 +38,8 @@
     position: relative;
     width: fit-content;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     @include sm {
       margin-right: calcDimension(24.14px);
     }
@@ -51,7 +52,10 @@
       width: 100%;
       text-align: center;
       white-space: nowrap;
-      position: absolute;
+      margin-top: calcDimension(6px);
+      // position: absolute;
+      left:0;
+      right: 0;
       font-size: calcDimensionXs(12px);
       @include sm {
         font-size: calcDimension(16.667px);

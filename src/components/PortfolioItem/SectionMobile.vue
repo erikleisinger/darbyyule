@@ -69,9 +69,14 @@
 
         <div class="text--wrap" v-for="(section, index) in SECTIONS[name]" :key="index">
           <span v-if="currentSection === index" class="text--inner" data-flip-id="text" v-html="SECTIONS[name][currentSection]?.text">
+          
         </span
           >
+            
         </div>
+         <div class="arrow-down__container" v-if="currentSection < 3">
+              <arrow-down class="arrow-down--section" @click="onScrollDown" />
+            </div>
         <div v-if="currentSection >= 3" class="about-container">
           <color-button class="about-button" @click="$router.push({ name: 'about' })"
             >About</color-button
@@ -165,7 +170,27 @@ $scrollsection-height: calc(100 * var(--vh, 1vh));
     font-family: $font-title;
     font-size: calcDimensionXs(14px);
     line-height: calcDimensionsXs(13px);
+  
   }
+
+     .arrow-down__container {
+      // position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: fit-content;
+      
+      .arrow-down--section {
+        pointer-events: all;
+        height: calcDimensionXs(20.91px);
+        width: calcDimensionXs(40px);
+        transition: transform 0.2s;
+        cursor: pointer;
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
 
   .about-container {
     width: 100%;
@@ -325,7 +350,7 @@ const props = defineProps({
   modelValue: Number,
 })
 
-const imgBg = computed(() => currentSection.value >= 3 ? 'linear-gradient(180deg, #887BAD 0%, #FFFCF8 100%)' : '')
+const imgBg = computed(() => currentSection.value >= 3 ? 'linear-gradient(180deg, #887BAD 0%, #FFFCF8 100%)' : '#fffcf8')
 
 const playingVideo = ref(false)
 
