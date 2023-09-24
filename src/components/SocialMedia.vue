@@ -76,7 +76,7 @@ const props = defineProps({
   wrapClass: String
 })
 
-const minWidth = computed(() => props.dense ? '250px' : '600px')
+const minWidth = computed(() => props.dense ? '225px' : '600px')
 
 const goSocial = () => {
   window.open(LINKED_IN, '_blank')
