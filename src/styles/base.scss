@@ -21,6 +21,13 @@ body {
   @font-face {
     font-family: 'Spartan';
     font-style: normal;
+    font-weight: 500;
+    src: url('/fonts/Spartan-Medium.ttf') format('woff2'), 
+  }
+
+  @font-face {
+    font-family: 'Spartan';
+    font-style: normal;
     font-weight: 600;
     src: url('/fonts/Spartan-SemiBold.ttf') format('woff2'), 
   }
@@ -35,7 +42,14 @@ body {
   @font-face {
     font-family: 'Overused Grotesk';
     font-style: regular;
+    font-weight: 400;
     src: url('fonts/OverusedGrotesk-Light.otf') format('woff2'), 
+  }
+  @font-face {
+    font-family: 'Overused Grotesk';
+    font-style: regular;
+    font-weight: 500;
+    src: url('fonts/OverusedGrotesk-Medium.otf') format('woff2'), 
   }
 
 

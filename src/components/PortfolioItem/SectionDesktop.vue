@@ -3,8 +3,13 @@
     <div class="scroll-content--buffer" />
     <div class="scroll-section--invis" :style="{ height: bufferHeight }"></div>
     <div v-for="(section, index) in SECTIONS[name].slice(1)" :key="index">
+      <!-- TEXT SECTION -->
       <div class="row section-container">
-        <div class="description-container" :id="`description-${index}-${id}`">
+        <div
+          class="description-container"
+          :id="`description-${index}-${id}`"
+          :class="{ wide: !!section.horizontal }"
+        >
           <div
             class="gradient-container"
             :style="{ visibility: index >= 2 && currentSection >= 3 ? 'visible' : 'hidden' }"
@@ -12,10 +17,15 @@
           <span class="title--wrap" data-flip-id="title">{{ section?.title }}</span>
 
           <div class="text--wrap">
-            <span class="text--inner" data-flip-id="text"> {{ section?.text }}</span>
+            <span class="text--inner" data-flip-id="text" v-html="section?.text"></span>
+            <div class="arrow-down__container" v-if="currentSection < 3">
+              <arrow-down class="arrow-down--section" @click="onScrollDown" />
+            </div>
           </div>
-          <div v-if="currentSection > 2" class="about-container">
+
+          <div class="about-container">
             <color-button
+              v-if="currentSection > 2"
               class="button--color about-button"
               @click="$router.push({ name: 'about' })"
               >About</color-button
@@ -24,7 +34,24 @@
         </div>
       </div>
 
+      <!-- IMAGE SECTION -->
       <div class="row section-container" :id="`image-container-${id}`">
+        <div class="arrow--floating" v-if="!!section.horizontal">
+          <arrow-down
+            class="arrow"
+            :animated="false"
+            @click="onScrollUp"
+            v-if="currentSection > 3"
+          />
+        </div>
+        <div class="arrow--floating" v-if="!!section.horizontal">
+          <arrow-down
+            class="arrow"
+            :animated="false"
+            @click="onScrollDown"
+            v-if="currentSection < 5 && currentSection > 2"
+          />
+        </div>
         <div
           :class="{
             active: currentSection === index,
@@ -37,7 +64,10 @@
         >
           <div
             class="gradient-container"
-            :style="{ visibility: index >= 2 && currentSection >= 3 ? 'visible' : 'hidden', width: 'calc(50vw + 1px)' }"
+            :style="{
+              visibility: index >= 2 && currentSection >= 3 ? 'visible' : 'hidden',
+              width: 'calc(50vw + 1px)'
+            }"
           />
           <div class="image-inner" :style="{ background: `url(${getImageUrl(section.img)})` }" />
           <div
@@ -49,9 +79,7 @@
         </div>
 
         <div class="video-container" v-if="section.video && playingVideo">
-            <div
-            class="gradient-container"
-          />
+          <div class="gradient-container" />
           <iframe
             class="video"
             :src="section.videoUrl"
@@ -102,7 +130,7 @@
   </div>
 </template>
 <style lang="scss" scoped>
-$title-size: calcDimension(79.435px);
+$title-size: min(75px, calcDimension(79.435px));
 .scrollsection {
   height: 100vh;
   width: 100vw;
@@ -117,7 +145,7 @@ $title-size: calcDimension(79.435px);
     position: absolute;
     top: 0;
     right: 0;
-    height: calcDimension(300px);
+    height: min(290px, calcDimension(300px));
     width: 50vw;
     background: linear-gradient(180deg, #887bad 0%, #fffcf8 100%);
     z-index: 1;
@@ -141,7 +169,7 @@ $title-size: calcDimension(79.435px);
         font-weight: bold;
         font-family: $font-subtitle;
         text-transform: uppercase;
-        font-size: calcDimension(97.02px);
+        font-size: min(calcDimension(97.02px), 100px);
       }
       width: 100%;
     }
@@ -156,7 +184,6 @@ $title-size: calcDimension(79.435px);
     position: relative;
     margin-bottom: 1.7vh;
     color: $green;
-    font-size: 9vh;
     line-height: 9.06vh;
     font-family: $font-title;
     font-size: $title-size;
@@ -164,12 +191,31 @@ $title-size: calcDimension(79.435px);
     z-index: 1;
   }
   .text--wrap {
-    font-size: calcDimension(20px);
-    line-height: calcDimension(24px);
+    font-size: min(20px, calcDimension(20px));
+    line-height: min(24px, calcDimension(24px));
     color: $green;
     font-family: $font-title;
-    font-size: calcDimension(20px);
     z-index: 1;
+    white-space: pre-line;
+    position: relative;
+    .arrow-down__container {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: fit-content;
+      bottom: calc(-1 * calcDimension(75px));
+      .arrow-down--section {
+        pointer-events: all;
+        height: calcDimension(20.91px);
+        width: calcDimension(50px);
+        transition: transform 0.2s;
+        cursor: pointer;
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
   }
   .about-container {
     width: 100%;
@@ -184,9 +230,9 @@ $title-size: calcDimension(79.435px);
     margin-bottom: calcDimension(40.03px);
     .about-button {
       border-radius: calcDimension(18.6px) 0px calcDimension(18.6px) 0px;
-      height: calcDimension(89.294px);
-      width: calcDimension(276px);
-      font-size: calcDimension(51.158px);
+      height: min(80px, calcDimension(89.294px));
+      width: min(300px, calcDimension(276px));
+      font-size: min(50px, calcDimension(51.158px));
       font-family: $font-title;
       font-weight: 600;
       padding-top: calcDimension(8px);
@@ -196,6 +242,7 @@ $title-size: calcDimension(79.435px);
 
   .header-images--wrap {
     width: 100%;
+    max-width: 1300px;
     box-sizing: border-box;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -203,7 +250,7 @@ $title-size: calcDimension(79.435px);
     margin-top: 6.6vh;
     .header-image {
       width: 100%;
-      max-width: 1100px;
+      max-width: 350px;
       box-sizing: border-box;
       aspect-ratio: 1/1;
       border-radius: 16px;
@@ -222,15 +269,47 @@ $title-size: calcDimension(79.435px);
   .section-container {
     position: fixed;
     top: 0;
-
+    width: 50vw;
     pointer-events: none;
     height: 100vh;
-    width: 50vw;
+
     &:nth-child(odd) {
       left: 0;
     }
     &:nth-child(even) {
       right: 0;
+    }
+
+    .arrow--floating {
+      position: absolute;
+      pointer-events: all;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      z-index: 10;
+      cursor: pointer;
+      transition: transform 0.2s;
+      &:hover {
+        transform: scale(1.1);
+      }
+      .arrow {
+        width: calcDimension(50px);
+      }
+
+      &:nth-of-type(1) {
+        left: 2.5vw;
+        .arrow {
+          transform: rotate(90deg);
+        }
+      }
+      &:nth-of-type(2) {
+        right: 2.5vw;
+        .arrow {
+          transform: rotate(270deg);
+        }
+      }
     }
 
     .description-container {
@@ -246,19 +325,21 @@ $title-size: calcDimension(79.435px);
       padding: 0px calcDimension(128px);
       box-sizing: border-box;
       z-index: 1;
+      &.wide {
+        padding-right: unset;
+      }
     }
   }
   .image-big {
     position: fixed;
     top: 0;
-
+    height: 100vh;
     &:not(.horizontal) {
       top: 100vh;
     }
     &.horizontal {
       right: -50vw;
     }
-    height: 100vh;
     width: 50vw;
     background-repeat: no-repeat !important;
     background-size: cover !important;
@@ -282,6 +363,13 @@ $title-size: calcDimension(79.435px);
       z-index: 3;
 
       background-size: contain !important;
+    }
+
+    &.horizontal {
+      .image-inner {
+        height: 85vh;
+        top: 7.5vh;
+      }
     }
   }
   .content-half__container {
@@ -311,7 +399,8 @@ $title-size: calcDimension(79.435px);
 
     .arrow {
       height: calcDimension(109px);
-      width: calcDimension(117px);
+      width: min(calcDimension(117px), 100px);
+
       cursor: pointer;
       pointer-events: all;
       z-index: 100;
@@ -372,11 +461,12 @@ $title-size: calcDimension(79.435px);
 <script setup>
 import ColorButton from '../Buttons/ColorButton.vue'
 import ContentArrowDown from '../icons/ContentArrowDown.vue'
+import ArrowDown from '../icons/ArrowDown.vue'
 import Play from '../icons/Play.vue'
 import { SECTIONS } from '@/constants/content'
 import { useScroll, toRefs, useThrottleFn } from '@vueuse/core'
 import { getImageUrl } from '@/utils/url'
-import { ref, nextTick, watch, computed } from 'vue'
+import { ref, nextTick, onMounted, watch, computed } from 'vue'
 import gsap from 'gsap'
 import { Flip } from 'gsap/Flip'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -411,20 +501,21 @@ const sectionsLength = SECTIONS[props.name].slice(1)?.length
 const { isScrolling, directions, y } = useScroll(scrollsection)
 
 const bufferHeight = computed(() => {
-  return `${window.innerHeight * y.value + 10}px`
+  return `${window.innerHeight * 1000}px`
 })
 
-watch(y, (v) => {
-  if (v === 0) {
-    scrollsection.value.scrollTop = 1
-  }
+const canScroll = ref(false)
+
+onMounted(() => {
+  y.value = (window.innerHeight * 1000) / 2
+  nextTick(() => {
+    canScroll.value =true;
+  })
 })
+
+
 
 const { top: scrollingUp, bottom: scrollingDown } = toRefs(directions)
-
-const timeout = () => {
-  return new Promise((resolve) => setTimeout(resolve, 1000))
-}
 
 const onScrollUp = useThrottleFn(async () => {
   const i = currentSection.value
@@ -476,6 +567,7 @@ const onScrollDown = useThrottleFn(() => {
 }, 100)
 
 watch(isScrolling, () => {
+  if (!canScroll.value) return;
   if (scrollingUp.value) {
     onScrollUp()
   } else if (scrollingDown.value) {

@@ -30,7 +30,7 @@
   margin-top: calcDimensionXs(109px);
   @include sm {
     width: calcDimension(1274px);
-    margin-top: unset;
+    margin-top: calcDimension(100px);
   }
   box-sizing: border-box;
 }
@@ -58,19 +58,23 @@
     font-family: $font-title;
     @include sm {
       font-size: calcDimension(166.205px);
+      font-weight: 600;
     }
   }
   .splash--h2 {
     font-family: $font-subtitle;
-     color: #9E5170;
+     color: $pink;
 
     margin-top: calcDimensionXs(-7px);
     font-size: calcDimensionXs(24.405px);
     margin-bottom: calcDimensionXs(24px);
    
      @include sm {
-      font-size: calcDimension(71.744px);
+      font-size: calcDimension(73.61px);
           margin-bottom: calcDimension(75px);
+          font-weight: 500;
+          margin-top: calc(-1 * calcDimension(45px));
+          margin-left: calcDimension(10px);
     }
   }
 

@@ -1,6 +1,6 @@
 <template>
   <section class="splash__container full-width column justify-center items-center">
-    <div class="splash-inner column items-center">
+    <div class="splash-inner column items-center"  @click="$router.push({ name: 'about' })">
       <div class="row justify-center" ref="logo">
         <Logo class="logo" />
       </div>
@@ -32,7 +32,7 @@
   @return calc($title-size-sm * $n);
 }
 
-$title-size: min(9.9vw, 130px);
+$title-size: min(10.11vw, 150px);
 // $title-size: 9.9vw;
 
 $title-size-sm: 11.85vw;
@@ -73,7 +73,7 @@ $button-border-radius-xs: calcDimensionXs(0.254);
 
     line-height: calcDimension(1.04);
     font-family: $font-title;
-    font-weight: 700;
+    font-weight: 500;
   }
   .splash--h2 {
     // letter-spacing: calcDimensionXs(-0.05907);
@@ -82,10 +82,10 @@ $button-border-radius-xs: calcDimensionXs(0.254);
     font-family: $font-subtitle;
     @include sm {
       margin-left: calcDimension(0.1);
-      font-size: calcDimension(0.5656);
+      font-size: calcDimension(0.62);
 
       // letter-spacing: calcDimension(-0.0484);
-      margin-top: calc(-1 * calcDimension(0.3));
+      margin-top: calc(-1 * calcDimension(0.2));
     }
 
     color: #9e5170;

@@ -25,7 +25,7 @@
           teams to deliver high-quality, accessible designs.
         </div>
         <div class="social-container">
-          <social-media />
+          <social-media buttonLabels/>
         </div>
       </div>
     </div>
@@ -65,6 +65,7 @@
   margin-top: calcDimensionXs(80px);
   height: calc(100 * var(--vh, 1vh) - calcDimensionXs(80px));
   width: 100vw;
+  max-width:100vw;
   justify-content: center;
   align-items: center;
   overflow: auto;
@@ -73,7 +74,7 @@
 
     grid-template-rows: 35% 1fr;
     // width: calcDimensionRelative(1310.34);
-    width: 100%;
+    width: inherit;
     height: 100%;
     // row-gap: calcDimensionRelative(101.107);
   }
@@ -100,31 +101,38 @@
   #right-section {
     padding: 0px calcDimensionXs(21px);
     //  margin-top: calcDimensionRelative(50);
+    width:inherit;
+    box-sizing: border-box;
   }
 
   .social-container {
-    width: 100%;
+
     display: flex;
     justify-content: center;
     margin-top: calcDimensionXs(46px);
-    margin-bottom: calcDimensionXs(10px);
+    margin-bottom: calcDimensionXs(40px);
     height: calcDimensionXs(38px);
     box-sizing: border-box;
-    :deep(.social-button) {
-      width: calcDimensionXs(38px);
+
+    :deep(.social-buttons) {
+      min-width: 250px;
+      .social-button {
+  width: calcDimensionXs(38px);
       height: calcDimensionXs(38px);
       &:not(last-child) {
-        margin-right: calcDimensionXs(35px);
+        // margin-right: calcDimensionXs(35px);
       }
       &:last-child {
         margin-right: unset !important;
       }
+      }
+    
     }
   }
   #left-section {
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: inherit;
     position: relative;
     margin-bottom: calcDimensionXs(30px);
 

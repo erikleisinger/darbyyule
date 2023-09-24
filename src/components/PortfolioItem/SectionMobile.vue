@@ -2,7 +2,6 @@
   <div class="scrollsection" ref="scrollsection">
     <div class="scroll-content--buffer" />
     <div class="scroll-section--invis" :style="{ height: bufferHeight }">
-      <!-- {{ index }} -->
     </div>
     <div
       class="row section-container image-container"
@@ -44,13 +43,13 @@
           :style="{
             visibility: currentSection >= SECTIONS[name].length - 1 ? 'hidden' : 'visible'
           }"
-          @click="onScrollDown"
+          @click="() => scroll(false)"
         />
         <arrow-down
           class="arrow right"
           :animated="false"
           :style="{ visibility: currentSection < 4 ? 'hidden' : 'visible' }"
-          @click="onScrollUp"
+          @click="() => scroll(true)"
         />
       </div>
     </div>
@@ -69,8 +68,8 @@
         </div>
 
         <div class="text--wrap" v-for="(section, index) in SECTIONS[name]" :key="index">
-          <span v-if="currentSection === index" class="text--inner" data-flip-id="text">
-            {{ SECTIONS[name][currentSection]?.text }}</span
+          <span v-if="currentSection === index" class="text--inner" data-flip-id="text" v-html="SECTIONS[name][currentSection]?.text">
+        </span
           >
         </div>
         <div v-if="currentSection >= 3" class="about-container">
@@ -98,6 +97,10 @@
 </template>
 <style lang="scss" scoped>
 $scrollsection-height: calc(100 * var(--vh, 1vh));
+
+:deep(.hide-mobile) {
+  display: none;
+}
 .scrollsection {
   height: $scrollsection-height;
   width: 100vw;
@@ -309,9 +312,9 @@ import ColorButton from '../Buttons/ColorButton.vue'
 import ArrowDown from '../icons/ArrowDown.vue'
 import Play from '../icons/Play.vue'
 import { SECTIONS } from '@/constants/content'
-import { useScroll, toRefs, useThrottleFn } from '@vueuse/core'
+import { useScroll, toRefs, useDebounceFn } from '@vueuse/core'
 import { getImageUrl } from '@/utils/url'
-import { ref, nextTick, watch, computed } from 'vue'
+import { ref, nextTick, onMounted, watch, computed } from 'vue'
 import gsap from 'gsap'
 import { Flip } from 'gsap/Flip'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -343,23 +346,27 @@ const currentSection = computed({
   }
 })
 
+const canScroll = ref(false);
+
+onMounted(() => {
+  y.value = (window.innerHeight * 1000) / 2
+  nextTick(() => {
+    canScroll.value =true;
+  })
+})
+
 const sectionsLength = SECTIONS[props.name].slice(1)?.length
 
 const { isScrolling, directions, y } = useScroll(scrollsection)
 
 const bufferHeight = computed(() => {
-  return `${window.innerHeight * y.value + 10}px`
+  return `${window.innerHeight * 100}px`
 })
 
-watch(y, (v) => {
-  if (v === 0) {
-    scrollsection.value.scrollTop = 1
-  }
-})
 
 const { top: scrollingUp, bottom: scrollingDown } = toRefs(directions)
 
-const onScrollUp = useThrottleFn(() => {
+const onScrollUp = () => {
   playingVideo.value = false
   const i = currentSection.value
   if (i === 0) return
@@ -378,11 +385,11 @@ const onScrollUp = useThrottleFn(() => {
       duration: 1
     })
   })
-}, 100)
+}
 
-const onScrollDown = useThrottleFn(() => {
+const onScrollDown = () => {
   const i = currentSection.value
-  if (i === sectionsLength) return
+  if (i === sectionsLength) return;
   const state = Flip.getState('.title--wrap,.title--inner,.text--wrap,.text--inner')
   currentSection.value = i + 1
   {
@@ -400,13 +407,22 @@ const onScrollDown = useThrottleFn(() => {
       duration: 1
     })
   })
-}, 100)
+}
+
+const scroll = useDebounceFn((up) => {
+  if (up) {
+ onScrollUp()
+  } else {
+  onScrollDown()
+  }
+}, 10)
 
 watch(isScrolling, () => {
+  if (!canScroll.value) return;
   if (scrollingUp.value) {
-    onScrollUp()
+    scroll(true)
   } else if (scrollingDown.value) {
-    onScrollDown()
+    scroll(false)
   }
 })
 </script>

@@ -1,40 +1,88 @@
 <template>
   <div class="social-buttons row no-wrap items-center" :class="wrapClass">
-    <linked-in class="social-button" :class="buttonClass" @click="goSocial"/>
-    <email class="social-button" :class="buttonClass" />
-    <resume class="social-button" :class="buttonClass" />
+    <div class="button--wrap">
+      <linked-in class="social-button" :class="buttonClass" @click="goSocial" />
+      <div v-if="buttonLabels" class="button-label">Linked in</div>
+    </div>
+    <div class="button--wrap">
+      <email class="social-button" :class="buttonClass" @click="goEmail"/>
+      <div v-if="buttonLabels" class="button-label">Email</div>
+    </div>
+    <div class="button--wrap">
+      <resume class="social-button" :class="buttonClass" @click="goResume" />
+      <div v-if="buttonLabels" class="button-label">Resume</div>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
 .social-buttons {
-  width: fit-content;
+  @include sm {
+    width: fit-content;
+    min-width: 600px;
+  }
+  justify-content: space-around;
   .social-button {
     fill: $social-button;
     width: calcDimension(48.28px);
-        height: calcDimension(48.28px);
-    margin-right: calcDimension(24.14px);
+    height: calcDimension(48.28px);
+
     aspect-ratio: 1/1;
     cursor: pointer;
     transition: transform 0.3s;
     &:hover {
-      transform: scale(1.1)
+      transform: scale(1.1);
+    }
+  }
+
+  .button--wrap {
+    position: relative;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    @include sm {
+      margin-right: calcDimension(24.14px);
+    }
+
+    .button-label {
+      text-transform: uppercase;
+      font-family: $font-subtitle;
+      color: #999999;
+      bottom: calc(-1 * calcDimensionXs(18px));
+      width: 100%;
+      text-align: center;
+      white-space: nowrap;
+      position: absolute;
+      font-size: calcDimensionXs(12px);
+      @include sm {
+        font-size: calcDimension(16.667px);
+
+        bottom: calc(-1 * calcDimension(25px));
+      }
     }
   }
 }
 </style>
 <script setup>
-import {LINKED_IN} from '@/constants/links'
-import ColorButton from './Buttons/ColorButton.vue'
+import { EMAIL, LINKED_IN, RESUME } from '@/constants/links'
 import LinkedIn from './icons/LinkedIn.vue'
 import Email from './icons/Email.vue'
 import Resume from './icons/Resume.vue'
 
 const props = defineProps({
   buttonClass: String,
+  buttonLabels: Boolean,
   wrapClass: String
 })
 
 const goSocial = () => {
-  window.open(LINKED_IN, "_blank")
+  window.open(LINKED_IN, '_blank')
+}
+
+const goResume = () => {
+  window.open(RESUME, '_blank')
+}
+
+const goEmail = () => {
+   window.open(EMAIL)
 }
 </script>

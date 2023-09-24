@@ -22,7 +22,7 @@
           collaborate with cross-functional teams to deliver high-quality, accessible designs.
         </div>
         <div class="social-container">
-          <social-media />
+          <social-media buttonLabels/>
         </div>
       </div>
       <div id="right-section">
@@ -35,8 +35,8 @@
 </template>
 
 <style lang="scss" scoped>
-// $title-size: min(calcDimension(98.905px), 300px);
-$title-size: calcDimension(98.905px);
+$title-size: min(calcDimension(110.905px), 100px);
+// $title-size: calcDimension(98.905px);
 
 @function calcDimensionRelative($percent) {
   @return calc($title-size * ($percent / 100));
@@ -87,8 +87,9 @@ $title-size: calcDimension(98.905px);
   .title {
     text-transform: uppercase;
     font-size: $title-size;
-    font-family: $font-title;
-    margin-bottom: calcDimensionRelative(25)
+    font-family: $font-subtitle;
+    font-style: italic;
+    margin-bottom: calcDimensionRelative(10)
   }
   .subtitle {
     color: $pink;
@@ -112,7 +113,7 @@ $title-size: calcDimension(98.905px);
       width: calcDimensionRelative(70.7749);
       height: calcDimensionRelative(70.7749);
       &:not(last-child) {
-        margin-right: calcDimensionRelative(69.95);
+        // margin-right: calcDimensionRelative(69.95);
       }
       &:last-child {
         margin-right: unset !important;
@@ -129,7 +130,7 @@ $title-size: calcDimension(98.905px);
 
   #right-section {
     position: relative;
-
+    margin-top: calcDimension(30px);
    .bio-pic,
     .bio-pic--bg {
       position: absolute;
