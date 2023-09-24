@@ -74,7 +74,7 @@
           >
             
         </div>
-         <div class="arrow-down__container" v-if="currentSection < 3">
+         <div class="arrow-down__container" v-if="currentSection < 3 && currentSection !== 0">
               <arrow-down class="arrow-down--section" @click="onScrollDown" />
             </div>
         <div v-if="currentSection >= 3" class="about-container">
