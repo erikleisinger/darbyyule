@@ -54,6 +54,7 @@ $button-border-radius-xs: calcDimensionXs(0.254);
   .splash-inner {
     width: fit-content;
     box-sizing: border-box;
+    cursor: pointer;
     @include sm {
       // margin: auto;
       margin-top: calcDimension(0.2323);
