@@ -18,7 +18,7 @@
 .social-buttons {
   @include sm {
     width: fit-content;
-    min-width: 600px;
+    min-width: v-bind(minWidth);
   }
   justify-content: space-around;
   .social-button {
@@ -63,6 +63,7 @@
 }
 </style>
 <script setup>
+import {computed} from 'vue'
 import { EMAIL, LINKED_IN, RESUME } from '@/constants/links'
 import LinkedIn from './icons/LinkedIn.vue'
 import Email from './icons/Email.vue'
@@ -71,8 +72,11 @@ import Resume from './icons/Resume.vue'
 const props = defineProps({
   buttonClass: String,
   buttonLabels: Boolean,
+  dense: Boolean,
   wrapClass: String
 })
+
+const minWidth = computed(() => props.dense ? '250px' : '600px')
 
 const goSocial = () => {
   window.open(LINKED_IN, '_blank')

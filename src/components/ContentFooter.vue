@@ -2,7 +2,7 @@
   <footer class="content-footer row justify-between no-wrap">
     <logo class="logo" />
     <div class="row no-wrap items-center">
-      <social-media />
+      <social-media dense/>
       <color-button class="color-button" @click="$router.push({ name: 'about' })">
         About
       </color-button>
