@@ -22,12 +22,11 @@ export const SECTIONS = {
     {
       img: 'counselling_ideation.png',
       title: 'Ideation',
-      text: `Because this was a brand new concept to the CCC, I started by conducting User Interviews with staff and clients. We did not even understand the utility of their website past letting clients know where the CCC was.  
+      text: `Because this was a brand new concept to the CCC, I started by conducting User Interviews with staff and clients to gain a better understanding of the website’s utility.
 
       After the User Interviews, I created a HMW question based off of my information. I came up with ‘How might we adjust the CCC’s online presence to make first point of contact simple for clients?’
       
-      Since it is a Low-Barrier service, we needed to address all of the barriers that arose out of the website. Was it Mobile Forward? Was there a way for the clients to make contact easily? What do they do when they are on a waitlist? Is it accessible?`
-    },
+      Since it is a Low-Barrier service, we needed to address all of the barriers that arose from the website. Was it Mobile Forward? Was there a way for the clients to make contact easily? What do they do when they are on a waitlist? Is it accessible?`},
     {
       img: 'counselling_execution_1.png',
       title: 'Execution',
