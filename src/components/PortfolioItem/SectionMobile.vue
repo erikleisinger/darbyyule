@@ -222,7 +222,7 @@ $scrollsection-height: calc(100 * var(--vh, 1vh));
       box-sizing: border-box;
       aspect-ratio: 1/1;
       border-radius: 16px;
-      background-size: contain !important;
+      background-size: 100% !important;
       margin: auto;
     }
   }

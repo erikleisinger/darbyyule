@@ -254,7 +254,7 @@ $title-size: min(75px, calcDimension(79.435px));
       box-sizing: border-box;
       aspect-ratio: 1/1;
       border-radius: 16px;
-      background-size: contain !important;
+      background-size: 100% !important;
       margin: auto;
     }
   }
